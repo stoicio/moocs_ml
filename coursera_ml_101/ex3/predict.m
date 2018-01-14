@@ -20,15 +20,17 @@ p = zeros(size(X, 1), 1);
 %       information see 'help max'. If your examples are in rows, then, you
 %       can use max(A, [], 2) to obtain the max for each row.
 %
+input_features = [ones(m, 1) X];
+layer_1_activations = sigmoid(input_features * Theta1'); %z2
 
+% add bias vector
+layer_1_activations = [ones(size(layer_1_activations, 1), 1) layer_1_activations]; 
 
+layer_2_activations = sigmoid(layer_1_activations * Theta2');
 
+[max_probability, max_probability_index] = max(layer_2_activations, [], 2);
 
-
-
-
-
-
+p = max_probability_index; 
 % =========================================================================
 
 

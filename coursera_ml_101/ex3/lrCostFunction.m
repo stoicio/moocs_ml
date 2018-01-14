@@ -39,8 +39,14 @@ grad = zeros(size(theta));
 
 
 
+hypothesis = sigmoid(X * theta);
+total_cost = (-y' * log(hypothesis)) - ((1 - y') * log(1 - hypothesis));
+J = total_cost / m;
+grad = (X' * (hypothesis - y)) / m;
 
-
+theta_copy = [0; theta(2:length(theta))]; %  We don't want to modify 1st weigth since its bias
+J = J + (0.5 * lambda * (1/m) * sum(theta_copy .^ 2));
+grad = grad .+ ((lambda/m) * theta_copy);
 
 
 

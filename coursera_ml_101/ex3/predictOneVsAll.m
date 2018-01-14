@@ -29,11 +29,11 @@ X = [ones(m, 1) X];
 %       are in rows, then, you can use max(A, [], 2) to obtain the max 
 %       for each row.
 %       
+all_predictions = X * all_theta';
 
+[max_probability, max_probability_index] = max(all_predictions, [], 2);
 
-
-
-
+p = max_probability_index;
 
 
 % =========================================================================
