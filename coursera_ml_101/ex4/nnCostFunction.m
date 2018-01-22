@@ -62,22 +62,80 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+## START FORWARD PROPAGATION##
+input_layer = [ones(m, 1), X]; % Add bias column. Technically its layer a1
+hidden_layer_hypothesis = input_layer * Theta1'; % Z2
+hidden_layer_activations = sigmoid(hidden_layer_hypothesis); % Layer a2
+
+% Add Bias column to hidden layer
+hidden_layer_bias = ones(size(hidden_layer_activations,1),1); 
+hidden_layer_activations = [hidden_layer_bias hidden_layer_activations];
+
+output_layer_hypothesis = hidden_layer_activations * Theta2'; % Layer Z3
+output_activations = sigmoid(output_layer_hypothesis); % hThetaX
+
+## END FORWARD PROPAGATION ##
+
+## START COST FUNCTION ##
+
+y_label_matrix = zeros(m, num_labels);
+
+for i = 1:num_labels
+  this_label_indices = (y == i);
+  y_label_matrix(this_label_indices, i) = 1;
+end
+
+first_term = -1 * y_label_matrix .* log(output_activations);
+second_term = (1 - y_label_matrix) .* log( 1 - output_activations);
+
+% Need a scalar cost. Sum across example, and sum across all labels
+J = (1/m) * sum(sum(first_term - second_term));
+
+% Compute regularization term
+theta1_sum = sum(sum(Theta1(:, 2:end).^2));
+theta2_sum = sum(sum(Theta2(:, 2:end).^2));
+regularization_term = (lambda / (2 * m)) * ( theta1_sum + theta2_sum);
+J = J + regularization_term;
+## END COST FUNCTION ##
 
 
+## START BACK PROPAGATION
+for i = 1:m % For each example in training set
+  % FORWARD PROPAGATION
+  input_layer = [1; X(i, :)']; %a1
+  hidden_layer_hypothesis = Theta1 * input_layer; %z2
+  hidden_layer_activation = [1; sigmoid(hidden_layer_hypothesis)]; %a2
+  output_layer_hypothesis = Theta2 * hidden_layer_activation; %z3
+  output_activation = sigmoid(output_layer_hypothesis); % a3
+  
+  actual_output = zeros(num_labels,1);
+  actual_output(y(i)) = 1;
+  % FORWARD PROPAGATION ENDS
+  
+  % Calculate how much error each layer contributed to the final output
+  output_error = output_activation - actual_output; %delta3
+  
+  error_due_to_hidden_layer = (Theta2' * output_error) .* [1; sigmoidGradient(hidden_layer_hypothesis)];
+  error_due_to_hidden_layer = error_due_to_hidden_layer(2:end);
+  % Accumulate Gradient
+  % grad = grad + delta2 * a1'
+  Theta1_grad = Theta1_grad + error_due_to_hidden_layer * input_layer'; 
+  % grad = grad + delta3 * a2'
+  Theta2_grad = Theta2_grad + output_error * hidden_layer_activation'; 
+  
+end
 
+% Take average of all errors - Unregularized Gradient
+Theta1_grad = (1/m) * Theta1_grad;
+Theta2_grad = (1/m) * Theta2_grad;
 
+% Regularized Gradient 
+theta_1_bias_replacement = zeros(size(Theta1, 1), 1);
+theta_2_bias_replacement = zeros(size(Theta2, 1), 1);
 
-
-
-
-
-
-
-
-
-
-
-
+Theta1_grad = Theta1_grad + (lambda/m) * [theta_1_bias_replacement Theta1(:, 2:end)];
+Theta2_grad = Theta2_grad + (lambda/m) * [theta_2_bias_replacement Theta2(:, 2:end)];
+## END BACK PROPAGATION
 
 
 % -------------------------------------------------------------
