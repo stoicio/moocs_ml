@@ -110,7 +110,7 @@ lambda = 0;
                   [ones(size(Xval, 1), 1) Xval], yval, ...
                   lambda);
 
-plot(1:m, error_train, 1:m, error_val);
+plot(1:m, error_train,'LineWidth', 2, 1:m, error_val, 'LineWidth', 2);
 title('Learning curve for linear regression')
 legend('Train', 'Cross Validation')
 xlabel('Number of training examples')
@@ -178,7 +178,7 @@ title (sprintf('Polynomial Regression Fit (lambda = %f)', lambda));
 figure(2);
 [error_train, error_val] = ...
     learningCurve(X_poly, y, X_poly_val, yval, lambda);
-plot(1:m, error_train, 1:m, error_val);
+plot(1:m, error_train, 1:m, error_val, 'LineWidth', 2);
 
 title(sprintf('Polynomial Regression Learning Curve (lambda = %f)', lambda));
 xlabel('Number of training examples')
@@ -205,7 +205,7 @@ pause;
     validationCurve(X_poly, y, X_poly_val, yval);
 
 close all;
-plot(lambda_vec, error_train, lambda_vec, error_val);
+plot(lambda_vec, error_train, 'LineWidth', 2, lambda_vec, error_val, 'LineWidth', 2);
 legend('Train', 'Cross Validation');
 xlabel('lambda');
 ylabel('Error');

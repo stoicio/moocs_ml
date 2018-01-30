@@ -14,9 +14,9 @@ X_poly = zeros(numel(X), p);
 %               column of X contains the values of X to the p-th power.
 %
 % 
-
-
-
+p_mat = repmat([1:p], numel(X), 1);
+x_mat = repmat(X, 1, p);
+X_poly = x_mat .^ p_mat;
 
 
 
