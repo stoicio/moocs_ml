@@ -25,7 +25,13 @@ centroids = zeros(K, n);
 %
 % Note: You can use a for-loop over the centroids to compute this.
 %
-
+for i = 1:K
+  mask = (idx==i);
+  num_open_masks = sum(mask);
+  extended_mask = repmat(mask, 1, n);
+  masked_x = X .* extended_mask;
+  centroids(i,:) = sum(masked_x) ./ num_open_masks;
+ end
 
 
 
