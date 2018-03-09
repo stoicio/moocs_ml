@@ -131,15 +131,15 @@ my_ratings = zeros(1682, 1);
 my_ratings(1) = 4;
 
 % Or suppose did not enjoy Silence of the Lambs (1991), you can set
-my_ratings(98) = 2;
+my_ratings(98) = 4;
 
 % We have selected a few movies we liked / did not like and the ratings we
 % gave are as follows:
 my_ratings(7) = 3;
 my_ratings(12)= 5;
 my_ratings(54) = 4;
-my_ratings(64)= 5;
-my_ratings(66)= 3;
+my_ratings(82)= 3;
+my_ratings(64)= 4;
 my_ratings(69) = 5;
 my_ratings(183) = 4;
 my_ratings(226) = 5;
